@@ -9,7 +9,7 @@ npm install random-array-iterator
 
 ## Usage
 
-``` js
+```js
 const RandomArrayIterator = require('random-array-iterator')
 
 const ite = new RandomArrayIterator([1, 2, 3, 4, 5])

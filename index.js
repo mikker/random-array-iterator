@@ -1,11 +1,11 @@
 module.exports = class RandomArrayIterator {
-  constructor (values) {
+  constructor(values) {
     this.values = values
     this.start = 0
     this.length = this.values.length
   }
 
-  next () {
+  next() {
     if (this.length === 0) {
       if (this.start === 0) return { done: true, value: undefined }
       this.length = this.start
@@ -22,25 +22,25 @@ module.exports = class RandomArrayIterator {
     return { done: false, value }
   }
 
-  dequeue () {
+  dequeue() {
     this.values[this.start + this.length] = this.values[this.values.length - 1]
     this.values.pop()
   }
 
-  requeue () {
+  requeue() {
     const i = this.start + this.length
     const value = this.values[i]
     this.values[i] = this.values[this.start]
     this.values[this.start++] = value
   }
 
-  restart () {
+  restart() {
     this.start = 0
     this.length = this.values.length
     return this
   }
 
-  [Symbol.iterator] () {
+  [Symbol.iterator]() {
     return this
   }
 }
