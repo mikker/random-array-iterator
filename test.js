@@ -1,7 +1,7 @@
-const tape = require('tape')
+const test = require('brittle')
 const Iterator = require('./')
 
-tape('basic', function (t) {
+test('basic', function (t) {
   let diff = 0
 
   for (let n = 0; n < 5; n++) {
@@ -11,18 +11,17 @@ tape('basic', function (t) {
     const cnts = {}
     for (const i of new Iterator(values)) {
       cnts[i] = (cnts[i] || 0) + 1
-      t.same(cnts[i], 1)
+      t.is(cnts[i], 1)
     }
 
     if (values.join(',') !== old) diff++
-    t.same(Object.keys(cnts).length, values.length)
+    t.is(Object.keys(cnts).length, values.length)
   }
 
   t.ok(diff > 1)
-  t.end()
 })
 
-tape('requeue', function (t) {
+test('requeue', function (t) {
   const values = [1, 2, 3, 4, 5]
 
   let requeues = 2
@@ -36,18 +35,16 @@ tape('requeue', function (t) {
     cnts[i] = (cnts[i] || 0) + 1
   }
 
-  t.same(cnts, {
+  t.alike(cnts, {
     1: 2,
     2: 1,
     3: 2,
     4: 1,
     5: 1
   })
-
-  t.end()
 })
 
-tape('dequeue', function (t) {
+test('dequeue', function (t) {
   const values = [1, 2, 3, 4, 5]
 
   const ite = new Iterator(values)
@@ -55,11 +52,10 @@ tape('dequeue', function (t) {
     if (i === 2 || i === 5) ite.dequeue()
   }
 
-  t.same(values.sort(), [1, 3, 4])
-  t.end()
+  t.alike(values.sort(), [1, 3, 4])
 })
 
-tape('dequeue all', function (t) {
+test('dequeue all', function (t) {
   const values = [1, 2, 3, 4, 5]
 
   const trace = []
@@ -69,12 +65,11 @@ tape('dequeue all', function (t) {
     trace.push(i)
   }
 
-  t.same(trace.sort(), [1, 2, 3, 4, 5])
-  t.same(values, [])
-  t.end()
+  t.alike(trace.sort(), [1, 2, 3, 4, 5])
+  t.alike(values, [])
 })
 
-tape('dequeue and requeue', function (t) {
+test('dequeue and requeue', function (t) {
   const values = [1, 2, 3, 4, 5]
 
   const ite = new Iterator(values)
@@ -90,7 +85,6 @@ tape('dequeue and requeue', function (t) {
     trace.push(i)
   }
 
-  t.same(values.sort(), [1, 3, 4])
-  t.same(trace.sort(), [1, 2, 3, 3, 4, 5])
-  t.end()
+  t.alike(values.sort(), [1, 3, 4])
+  t.alike(trace.sort(), [1, 2, 3, 3, 4, 5])
 })
